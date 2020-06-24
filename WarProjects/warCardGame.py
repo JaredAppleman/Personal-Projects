@@ -1,3 +1,9 @@
+"""
+Author: Jared Appleman
+Description: Python, Text-based War Card Game
+"""
+
+
 import random
 """
 ##################################################
