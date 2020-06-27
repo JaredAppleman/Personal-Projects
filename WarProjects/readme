@@ -1,10 +1,12 @@
 I am making these programs as sample projects. My goal is to get more familar with javascript, Java, GUI programming(Java), and to learn mobile app developement.
 
-WarCardGame.py: 
--Python, Text-based War Card Game
--Simply run program, it needs no special libraries or requirements
+Finished:
+	WarCardGame.py: 
+	-Python, Text-based War Card Game
+
+In-Progress
+	Web Application (html/css/javascript)
 
 Future War Projects:
-Web Application (html/css/javascript)
-Gui-based (Java)
-mobile app
+	Gui-based (Java)
+	mobile app
