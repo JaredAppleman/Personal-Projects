@@ -17,11 +17,11 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<!-- Music -->
+<!-- Music --
 <audio controls>
     <source src="assets/music/try-everything.mp3" type="audio/mpeg">
 </audio>
-
+-->
 
 <body>
     <!-- website container -->
@@ -33,67 +33,78 @@
         </div>
 
         <!-- Main Content Area -->
+
+        <!-- Main Display: current cards/announcements -->
         <div class="row currentCardArea">
 
-            <!-- Main Content-->
             <!-- Left Card-->
-            <div class="col-sm-5 currentCard">
-                <img src="assets/images/PlayingCardsAlbum/AH.jpg">
-                <p class="cardInfo">Ace of Hearts</p>
+            <div id="p1CurrentCard" class="col-sm-5 currentCard">
+                <img class="p1CurrentCardURL" src="assets/images/playingCard.jpg">
+                <p class="cardInfo"></p>
             </div>
             <!-- Game Info/Announcements-->
             <div class="col-sm-2 announcement">
                 <div class="row">
-                    <p>Player1 Won</p>
+                    <p>Welcome</p>
+                    <button type="button" onclick="testFunction()">Start Game</button>
                 </div>
+                
             </div>
             <!-- Right Card-->
-            <div class="col-sm-5 currentCard">
-                <img src="assets/images/PlayingCardsAlbum/10H.jpg">
-                <p class="cardInfo">10 of Hearts</p>
+            <div id="p2CurrentCard" class="col-sm-5 currentCard">
+                <img src="assets/images/playingCard.jpg">
+                <p class="p2CurrentCard cardInfo"></p>
             </div>
 
         </div>
 
-
+        <!-- First Pot Area for Ties -->
         <div class="row">
-            <div class="col-sm-6 potArea1">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot" src="assets/images/blankCard2.png">
+
+            <!-- Player1's pot -->
+            <div class="col-sm-6 potArea">
+                <img class="p1-1 pot" src="assets/images/blankCard2.png">
+                <img class="p1-2 pot" src="assets/images/blankCard2.png">
+                <img class="p1-3 pot" src="assets/images/blankCard2.png">
             </div>
             
-            <!-- <div class="col-sm-2"></div> -->
-
-            <div class="col-sm-6 potArea1">
-                <img class="pot" src="assets/images/PlayingCardsAlbum/10H.jpg">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot last" src="assets/images/blankCard2.png">
+            <!-- Player2's pot -->
+            <div class="col-sm-6 potArea">
+                <img class="p2-1 pot" src="assets/images/blankCard2.png">
+                <img class="p2-2 pot" src="assets/images/blankCard2.png">
+                <img class="p2-3 pot last" src="assets/images/blankCard2.png">
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-6 potArea1">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot" src="assets/images/blankCard2.png">
+        <!-- Pot Area for double Tie (initially hidden)-->
+        <div class="row doubleTie">
+
+            <!-- Player1's pot -->
+            <div class="col-sm-6 potArea">
+                <img class="p1-1 pot" src="assets/images/blankCard2.png">
+                <img class="p1-2 pot" src="assets/images/blankCard2.png">
+                <img class="p1-3 pot" src="assets/images/blankCard2.png">
             </div>
             
-            <!-- <div class="col-sm-2"></div> -->
-
-            <div class="col-sm-6 potArea1">
-                <img class="pot" src="assets/images/PlayingCardsAlbum/10H.jpg">
-                <img class="pot" src="assets/images/blankCard2.png">
-                <img class="pot last" src="assets/images/blankCard2.png">
+            <!-- Player2's pot -->
+            <div class="col-sm-6 potArea">
+                <img class="p2-1 pot" src="assets/images/PlayingCardsAlbum/10H.jpg">
+                <img class="p2-2 pot" src="assets/images/blankCard2.png">
+                <img class="p2-3 pot last" src="assets/images/blankCard2.png">
             </div>
         </div>
 
+        <!-- Game Info: #of cards in Deck/Pile -->
         <div class="row">
-            <div class="col-sm-6 potArea1">
+
+            <!-- Player1's Info -->
+            <div class="col-sm-6 potArea">
                 <p>Cards in Deck: </p>
                 <p>Cards in Pile: </p>
             </div>
-            <div class="col-sm-6 potArea1">
+
+            <!-- Player2's Info-->
+            <div class="col-sm-6 potArea">
                 <p>Cards in Deck: </p>
                 <p>Cards in Pile: </p>
             </div>
@@ -104,5 +115,6 @@
 
     <!-- Script -->
     <script src="assets/javascript/game.js" type="text/javascript"></script>
+    
 </body>
 </html>
