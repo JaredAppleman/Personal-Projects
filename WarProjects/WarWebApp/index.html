@@ -45,8 +45,9 @@
             <!-- Game Info/Announcements-->
             <div class="col-sm-2 announcement">
                 <div class="row">
-                    <p>Welcome</p>
+                    <p id="message">Welcome</p>
                     <button type="button" onclick="testFunction()">Start Game</button>
+                    <button type="button" onclick="drawFunction()">Draw</button>
                 </div>
                 
             </div>
@@ -99,14 +100,15 @@
 
             <!-- Player1's Info -->
             <div class="col-sm-6 potArea">
-                <p>Cards in Deck: </p>
-                <p>Cards in Pile: </p>
+                <p type="button" id="p1DeckLength" onclick="displayCards(p1DECK)">Cards in Pile: </p>
+                <p type="button" id="p1PileLength" onclick="displayCards(p1PILE)">Cards in Pile: </p>
+                <!--<p id="p1PileLength">Cards in Pile: </p>-->
             </div>
 
             <!-- Player2's Info-->
             <div class="col-sm-6 potArea">
-                <p>Cards in Deck: </p>
-                <p>Cards in Pile: </p>
+                <p type="button" id="p2DeckLength" onclick="displayCards(p2DECK)">Cards in Deck: </p>
+                <p type="button" id="p2PileLength" onclick="displayCards(p2PILE)">Cards in Pile: </p>
             </div>
         </div>
 

@@ -7,6 +7,7 @@
 }
 .currentCardArea{
     margin-bottom: 20px;
+    /*min-height: 346px;*/
 }
 .pot{
     width:20%;
@@ -35,6 +36,7 @@
 .announcement p{
     border: 2px dotted white;
     padding: 15px;
+    text-align: center;
 }
 
 
