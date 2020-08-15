@@ -3,6 +3,8 @@
 //For: Personal Project
 //War
 
+const startGameButton = document.querySelector('#startGameButton');
+const drawButton = document.querySelector('#drawButton');
 const p1CurrentCardHTML = document.querySelector('#p1CurrentCard');
 const p2CurrentCardHTML = document.querySelector('#p2CurrentCard');
 const messageHTML = document.querySelector('#message');
@@ -113,7 +115,7 @@ const shuffleCards = function(deck){
         index = Math.floor(Math.random()*limit);
         card = deck[index]
         shuffledDeck.push(card)
-        deck.splice(index,0)
+        deck.splice(index,1)
     }
     return shuffledDeck;
 }
@@ -167,14 +169,19 @@ const testFunction = function(){
     p2DECK_LENGTH = p2DECK.length;
 
     updateGameInfo()
+    startGameButton.disabled = true;
     
     //alert("hello");
 }
 
 const drawFunction = function(){
+    emptyDeck()
+
     let p1Card = p1DECK.pop();
     let p2Card = p2DECK.pop();
     let cardPot = [p1Card, p2Card];
+    console.log([p1Card.name,p2Card.name])
+
 
     if (p1Card.weight > p2Card.weight){
         p1PILE = p1PILE.concat(cardPot);
@@ -182,28 +189,52 @@ const drawFunction = function(){
         messageHTML.innerHTML = "Player1 Won the Trick"
 
     }
-    else{
+    else if (p1Card.weight < p2Card.weight){
         p2PILE = p2PILE.concat(cardPot)
         console.log("Player2 won the trick")
         messageHTML.innerHTML = "Player2 Won the Trick"
     }
-    else(
+    else{
         console.log("there is a tie")
-
-        
-
-    )
-    
+        messageHTML.innerHTML = "There is a tie"
+        p1PILE = p1PILE.concat(cardPot);
+    }
+  
     p1CurrentCardHTML.innerHTML =  p1Card.imageHTML +'<p class="cardInfo">' + p1Card.name+ '</p>'
     p2CurrentCardHTML.innerHTML =  p2Card.imageHTML +'<p class="cardInfo">' + p2Card.name+ '</p>'
     updateGameInfo()
+    gameOver()
    // p1DeckLengthHTML.innerHTML
 }
 
 const tieFunction = function(){}
 
-const emptyDeck = function(deck){
-    
+const emptyDeck = function(){
+    if (p1DECK.length === 0){
+        p1DECK = shuffleCards(p1PILE);
+        p1PILE = [];
+        
+    }
+    if (p2DECK.length === 0){
+        p2DECK = shuffleCards(p2PILE);
+        p2PILE = [];
+    }
+}
+
+const gameOver = function(){
+    let gameOverBool = false;
+
+    if ((p1DECK.length === 0) && (p1PILE.length === 0)){
+        messageHTML.innerHTML = "The game is over. Player 2 Wins!"
+        gameOverBool = true;
+    }
+    if ((p2DECK.length === 0) && (p2PILE.length === 0)){
+        messageHTML.innerHTML = "The game is over. Player 1 Wins!"
+        gameOverBool = true;
+    }
+    if (gameOverBool){
+        drawButton.disabled = true;
+    }
 }
 
 const displayCards = function(cardList){
