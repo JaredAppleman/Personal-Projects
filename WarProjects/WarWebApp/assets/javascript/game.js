@@ -9,6 +9,7 @@ DOM variables
 
 const startGameButton = document.querySelector('#startGameButton');
 const drawButton = document.querySelector('#drawButton');
+const endGameButton = document.querySelector('#endGameButton');
 const p1CurrentCardHTML = document.querySelector('#p1CurrentCard');
 const p2CurrentCardHTML = document.querySelector('#p2CurrentCard');
 const messageHTML = document.querySelector('#message');
@@ -55,10 +56,11 @@ class playingCard {
         this.imageURL = imageURL;
         this.name = value + ' of ' + suit + 's';
     }
-    get imageHTML(){
+    get imageSource(){
         const alt = 'alt="' + this.name + '"';
-        const src = 'src="assets/images/PlayingCardsAlbum/' + this.imageURL + '.jpg"';
-        return "<img " + src + " " + alt + ">";
+        //const src = 'src="assets/images/PlayingCardsAlbum/' + this.imageURL + '.jpg"';
+        //return "<img " + src + " " + alt + ">";
+        return "assets/images/PlayingCardsAlbum/" + this.imageURL + ".jpg"
     }
     get abbreValue(){
         if (! (this.value === '10')){
@@ -193,11 +195,10 @@ const testFunction = function(){
     console.log(playerDecks[0].length)
     player1.deck = playerDecks[0];
     player2.deck = playerDecks[1];
-    console.log(player1.deckLength)
-    console.log(player2.deckLength)
-
     updateGameInfo()
     startGameButton.disabled = true;
+    drawButton.disabled = false;
+    endGameButton.disabled = false;
     
     //alert("hello");
 }
@@ -228,12 +229,11 @@ const drawFunction = function(){
 
     roundOver(trickWinner, cardPot);
   
-    p1CurrentCardHTML.innerHTML =  p1Card.imageHTML +'<p class="cardInfo">' + p1Card.name+ '</p>'
-    p2CurrentCardHTML.innerHTML =  p2Card.imageHTML +'<p class="cardInfo">' + p2Card.name+ '</p>'
+    p1CurrentCardHTML.src = p1Card.imageSource;
+    p2CurrentCardHTML.src = p2Card.imageSource;
     updateGameInfo()
     gameOver(player1)
     gameOver(player2)
-   // p1DeckLengthHTML.innerHTML
 }
 
 const displayCards = function(cardList){
@@ -269,21 +269,21 @@ const displayCards = function(cardList){
 }
 
 /*###################################
-Tie FUNCTIONS
+TIE FUNCTIONS
 ####################################*/
 
 const tieFunction = function(cardPot){
     cardPot = tieFunction_getCards(cardPot)
 }
 
-const tieFunction_getCards = function(cardPot){
+const tieFunction_getCards = function(player, cardPot){
     //Get player1's Cards
     const p1CardPot = [];
 
     //normal
-    if (p1DECK.length >= 4){
+    if (player.deckLength >= 4){
         for (x = 0; x < 4; x++){
-            p1CardPot.push(p1DECK.pop())
+            cardPot.push(player.deck.pop())
         }
     }
 

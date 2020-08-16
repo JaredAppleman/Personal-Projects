@@ -4,23 +4,30 @@
 .currentCard img{
     max-width:236px;
     width: 100%;
+    max-height: 360px;
 }
-.currentCardArea{
+/*.currentCardArea{
     margin-bottom: 20px;
-    /*min-height: 346px;*/
-}
+    min-height: 346px;
+}*/
 .pot{
-    width:20%;
-    margin-right: 10px;
+    width:30%;
+    margin-right: 5px;
+}
+
+.gameInfo{
+    text-align:center;
 }
 .last{
     margin:0;
 }
 .potArea{
-    text-align:center;
     margin-bottom: 20px;
+    overflow: auto;
+    max-height: 250px;
+    height: auto;
 }
-.doubleTie{
+.extraTie{
     display:none;
 }
 .okay{
@@ -39,10 +46,14 @@
     text-align: center;
 }
 
-
+button{
+    min-width: 60%;
+    margin-bottom:5px;
+}
 
 body{
     background-image: url("../images/camo-background.jpg");
+    background-size: cover;
 }
 .content{
     background-color: green;

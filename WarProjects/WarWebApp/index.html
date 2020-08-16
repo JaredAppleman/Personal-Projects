@@ -38,8 +38,8 @@
         <div class="row currentCardArea">
 
             <!-- Left Card-->
-            <div id="p1CurrentCard" class="col-sm-5 currentCard">
-                <img class="p1CurrentCardURL" src="assets/images/playingCard.jpg">
+            <div class="col-sm-5 currentCard">
+                <img id="p1CurrentCard" class="p1CurrentCardURL" src="assets/images/playingCard.jpg">
                 <p class="cardInfo"></p>
             </div>
             <!-- Game Info/Announcements-->
@@ -47,13 +47,14 @@
                 <div class="row">
                     <p id="message">Welcome</p>
                     <button type="button" id="startGameButton" onclick="testFunction()">Start Game</button>
-                    <button type="button" id="drawButton" onclick="drawFunction()">Draw</button>
+                    <button disabled type="button" id="drawButton" onclick="drawFunction()">Draw</button>
+                    <button disabled class="last" type="button" id="endGameButton">End Game</button>
                 </div>
                 
             </div>
             <!-- Right Card-->
-            <div id="p2CurrentCard" class="col-sm-5 currentCard">
-                <img src="assets/images/playingCard.jpg">
+            <div class="col-sm-5 currentCard">
+                <img id="p2CurrentCard" src="assets/images/playingCard.jpg">
                 <p class="p2CurrentCard cardInfo"></p>
             </div>
 
@@ -64,9 +65,9 @@
 
             <!-- Player1's pot -->
             <div class="col-sm-6 potArea">
-                <img class="p1-1 pot" src="assets/images/blankCard2.png">
-                <img class="p1-2 pot" src="assets/images/blankCard2.png">
-                <img class="p1-3 pot" src="assets/images/blankCard2.png">
+                <img class="p1-1 pot" src="assets/images/PlayingCardsAlbum/JackC.jpg">
+                <img class="p1-2 pot" src="assets/images/playingCard.jpg">
+                <img class="p1-3 pot last" src="assets/images/blankCard2.png">
             </div>
             
             <!-- Player2's pot -->
@@ -78,7 +79,7 @@
         </div>
 
         <!-- Pot Area for double Tie (initially hidden)-->
-        <div class="row doubleTie">
+        <div class="row extraTie">
 
             <!-- Player1's pot -->
             <div class="col-sm-6 potArea">
@@ -96,10 +97,10 @@
         </div>
 
         <!-- Game Info: #of cards in Deck/Pile -->
-        <div class="row">
+        <div class="row gameInfo">
 
             <!-- Player1's Info -->
-            <div class="col-sm-6 potArea">
+            <div class="col-sm-6">
                 <p type="button" id="p1DeckLength" onclick="displayCards(player1.deck)">Cards in Pile: </p>
                 <p type="button" id="p1PileLength" onclick="displayCards(player1.pile)">Cards in Pile: </p>
                 <!--<p id="p1PileLength">Cards in Pile: </p>-->
