@@ -3,6 +3,10 @@
 //For: Personal Project
 //War
 
+/*###################################
+DOM variables
+####################################*/
+
 const startGameButton = document.querySelector('#startGameButton');
 const drawButton = document.querySelector('#drawButton');
 const p1CurrentCardHTML = document.querySelector('#p1CurrentCard');
@@ -12,15 +16,35 @@ const p1DeckLengthHTML = document.querySelector('#p1DeckLength')
 const p2DeckLengthHTML = document.querySelector('#p2DeckLength')
 const p1PileLengthHTML = document.querySelector('#p1PileLength')
 const p2PileLengthHTML = document.querySelector('#p2PileLength')
-let p1DECK = [];
-let p2DECK = [];
-let p1PILE = [];
-let p2PILE = [];
 
-let p1DECK_LENGTH = 0;
-let p2DECK_LENGTH = 0;
-let p1PILE_LENGTH = 0;
-let p2PILE_LENGTH = 0;
+/*###################################
+CLASSES
+####################################*/
+
+class player{
+    constructor(string){
+        this.deck = [];
+        this.pile = [];
+        this.string = string;
+    }
+    get deckLength(){
+        return this.deck.length
+    }
+    get pileLength(){
+        return this.pile.length
+    }
+    get totalCards(){
+        return this.deck.length + this.pile.length
+    }
+    get opponent(){
+        if (this.string === "player1"){
+            return "Player2";
+        }
+        else{
+            return "Player1";
+        }
+    }
+}
 
 class playingCard {
     constructor(suit, value, suitWeight, deckWeight, imageURL){
@@ -48,7 +72,17 @@ class playingCard {
     
 }
 
+/*###################################
+GLOBAL VARIABLES
+####################################*/
 
+var player1 = new player("Player1");
+var player2 = new player("Player2");
+
+
+/*###################################
+DECK FUNCTIONS
+####################################*/
 
 const createShuffledDeck = function(){
     //input: none
@@ -123,7 +157,7 @@ const dealCards = function(deck){
     //Input: deck
     //Output: 2 lists
     //doesn't change display.
-    player1 = true;
+    let player1 = true;
 
     const p1Deck = [];
     const p2Deck = [];
@@ -145,28 +179,22 @@ const dealCards = function(deck){
 
     return output;
 }
-    
-const updateGameInfo = function(){
 
-    p1DeckLengthHTML.innerHTML = 'Cards in Deck: ' + p1DECK.length;
-    p1PileLengthHTML.innerHTML = 'Cards in Pile: ' + p1PILE.length;
-    p2DeckLengthHTML.innerHTML = 'Cards in Deck: ' + p2DECK.length;
-    p2PileLengthHTML.innerHTML = 'Cards in Pile: ' + p2PILE.length;
-
-}
-
+/*###################################
+BUTTON FUNCTIONS
+####################################*/
 
 const testFunction = function(){
     //Input: none
     //Output: 2 lists
     // change from outline cards to back of cards; Draw button appears
     deck = createShuffledDeck();
-    console.log(deck.length)
     playerDecks = dealCards(deck);
-    p1DECK = playerDecks[0];
-    p2DECK = playerDecks[1];
-    p1DECK_LENGTH = p1DECK.length;
-    p2DECK_LENGTH = p2DECK.length;
+    console.log(playerDecks[0].length)
+    player1.deck = playerDecks[0];
+    player2.deck = playerDecks[1];
+    console.log(player1.deckLength)
+    console.log(player2.deckLength)
 
     updateGameInfo()
     startGameButton.disabled = true;
@@ -175,66 +203,37 @@ const testFunction = function(){
 }
 
 const drawFunction = function(){
-    emptyDeck()
+    isEmptyDeck(player1)
+    isEmptyDeck(player2)
 
-    let p1Card = p1DECK.pop();
-    let p2Card = p2DECK.pop();
+    let p1Card = player1.deck.pop();
+    let p2Card = player2.deck.pop();
     let cardPot = [p1Card, p2Card];
     console.log([p1Card.name,p2Card.name])
 
 
     if (p1Card.weight > p2Card.weight){
-        p1PILE = p1PILE.concat(cardPot);
-        console.log("Player1 won the trick")
-        messageHTML.innerHTML = "Player1 Won the Trick"
-
+        trickWinner = player1;
     }
     else if (p1Card.weight < p2Card.weight){
-        p2PILE = p2PILE.concat(cardPot)
-        console.log("Player2 won the trick")
-        messageHTML.innerHTML = "Player2 Won the Trick"
+        trickWinner = player2;
     }
+
     else{
         console.log("there is a tie")
         messageHTML.innerHTML = "There is a tie"
-        p1PILE = p1PILE.concat(cardPot);
+        //tieFunction(cardPot)
+        trickWinner = player1;
     }
+
+    roundOver(trickWinner, cardPot);
   
     p1CurrentCardHTML.innerHTML =  p1Card.imageHTML +'<p class="cardInfo">' + p1Card.name+ '</p>'
     p2CurrentCardHTML.innerHTML =  p2Card.imageHTML +'<p class="cardInfo">' + p2Card.name+ '</p>'
     updateGameInfo()
-    gameOver()
+    gameOver(player1)
+    gameOver(player2)
    // p1DeckLengthHTML.innerHTML
-}
-
-const tieFunction = function(){}
-
-const emptyDeck = function(){
-    if (p1DECK.length === 0){
-        p1DECK = shuffleCards(p1PILE);
-        p1PILE = [];
-        
-    }
-    if (p2DECK.length === 0){
-        p2DECK = shuffleCards(p2PILE);
-        p2PILE = [];
-    }
-}
-
-const gameOver = function(){
-    let gameOverBool = false;
-
-    if ((p1DECK.length === 0) && (p1PILE.length === 0)){
-        messageHTML.innerHTML = "The game is over. Player 2 Wins!"
-        gameOverBool = true;
-    }
-    if ((p2DECK.length === 0) && (p2PILE.length === 0)){
-        messageHTML.innerHTML = "The game is over. Player 1 Wins!"
-        gameOverBool = true;
-    }
-    if (gameOverBool){
-        drawButton.disabled = true;
-    }
 }
 
 const displayCards = function(cardList){
@@ -268,3 +267,75 @@ const displayCards = function(cardList){
         alert(text)
     }
 }
+
+/*###################################
+Tie FUNCTIONS
+####################################*/
+
+const tieFunction = function(cardPot){
+    cardPot = tieFunction_getCards(cardPot)
+}
+
+const tieFunction_getCards = function(cardPot){
+    //Get player1's Cards
+    const p1CardPot = [];
+
+    //normal
+    if (p1DECK.length >= 4){
+        for (x = 0; x < 4; x++){
+            p1CardPot.push(p1DECK.pop())
+        }
+    }
+
+    else if ((p1PILE.length + p1DECK.length) >= 4){
+        p1DECK = shuffleCards(p1PILE);
+        p1PILE = [];
+        for (x = 0; x < 4; x++){
+            p1CardPot.push(p1DECK.pop())
+        }
+    }
+    else if (((p1PILE.length + p1DECK.length) > 0) && ((p1PILE.length + p1DECK.length) < 4)){}
+
+    else{
+        gameOver()
+    }
+}
+
+
+/*###################################
+OTHER HELPER FUNCTIONS
+####################################*/
+
+const roundOver = function(trickWinner, cardPot){
+    trickWinner.pile = trickWinner.pile.concat(cardPot);
+    console.log(trickWinner.string);
+    messageHTML.innerHTML = trickWinner.string + " won the trick";
+
+}
+
+const gameOver = function(player){
+    if (player.totalCards === 0){
+        messageHTML.innerHTML = "The Game is over. " + player.opponent + "wins!";
+        drawButton.disabled = true;
+    }
+}
+
+const isEmptyDeck = function(player){
+    if (player.deckLength === 0){
+        player.deck = shuffleCards(player.pile);
+        player.pile = [];
+        console.log(player.string+" shuffled")
+    }
+}
+
+const updateGameInfo = function(){
+
+    p1DeckLengthHTML.innerHTML = 'Cards in Deck: ' + player1.deckLength;
+    p1PileLengthHTML.innerHTML = 'Cards in Pile: ' + player1.pileLength;
+    p2DeckLengthHTML.innerHTML = 'Cards in Deck: ' + player2.deckLength;
+    p2PileLengthHTML.innerHTML = 'Cards in Pile: ' + player2.pileLength;
+}
+
+
+
+
