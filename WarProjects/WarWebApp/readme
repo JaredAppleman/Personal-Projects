@@ -1,7 +1,8 @@
 Author: Jared Appleman
 
-Description: Simple Javascript website to play the War Card Game
+Description: Simple Javascript website to play the War Card Game. User vs Computer.
 
-Progress: Most of the html/css is finished. I have a working button that deals the cards and displays a single card.
+The game is finished. It can handle graphically displaying repeated ties.
 
-Running: to view my progress, just open the index.html file once the repo is downloaded.
+Running: You can play the game by opening index.html file once the repo is downloaded. 
+Once you click the 'start game' button, you simply, repeatedly click the 'draw' button until there is a winner.
