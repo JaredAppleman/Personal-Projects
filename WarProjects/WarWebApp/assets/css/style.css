@@ -21,7 +21,11 @@
 .last{
     margin:0;
 }
-.potArea{
+
+.tieDepth-2, .tieDepth-3, .tieDepth-4, .tieDepth-5, .tieDepth-6, .tieDepth-7{
+    display:none;
+}
+.p1PotArea,.p2PotArea{
     margin-bottom: 20px;
     overflow: auto;
     max-height: 250px;

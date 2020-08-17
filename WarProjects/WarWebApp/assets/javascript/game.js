@@ -7,16 +7,33 @@
 DOM variables
 ####################################*/
 
+//Buttons
 const startGameButton = document.querySelector('#startGameButton');
 const drawButton = document.querySelector('#drawButton');
-const endGameButton = document.querySelector('#endGameButton');
+const newGameButton = document.querySelector('#newGameButton');
+
+//Current Cards + Message
 const p1CurrentCardHTML = document.querySelector('#p1CurrentCard');
 const p2CurrentCardHTML = document.querySelector('#p2CurrentCard');
 const messageHTML = document.querySelector('#message');
+
+//Pot Areas
+const p1PotAreaHTML = document.querySelector(".p1PotArea")
+const p2PotAreaHTML = document.querySelector(".p2PotArea")
+const potAreaDepth1 = Array.from(document.querySelectorAll(".tieDepth-1"))
+const potAreaDepth2 = Array.from(document.querySelectorAll(".tieDepth-2"))
+const potAreaDepth3 = Array.from(document.querySelectorAll(".tieDepth-3"))
+const potAreaDepth4 = Array.from(document.querySelectorAll(".tieDepth-4"))
+const potAreaDepth5 = Array.from(document.querySelectorAll(".tieDepth-5"))
+const potAreaDepth6 = Array.from(document.querySelectorAll(".tieDepth-6"))
+const potAreaDepth7 = Array.from(document.querySelectorAll(".tieDepth-7"))
+var extraPotArea = document.querySelectorAll(".extra")
+
+//Game Info Buttons
 const p1DeckLengthHTML = document.querySelector('#p1DeckLength')
 const p2DeckLengthHTML = document.querySelector('#p2DeckLength')
 const p1PileLengthHTML = document.querySelector('#p1PileLength')
-const p2PileLengthHTML = document.querySelector('#p2PileLength')
+const p2PileLengthHTML = document.querySelector('#p2PileLength') 
 
 /*###################################
 CLASSES
@@ -81,6 +98,20 @@ GLOBAL VARIABLES
 var player1 = new player("Player1");
 var player2 = new player("Player2");
 
+var cardPot = [];
+var trickWinner;
+
+var tieDepth = 0;
+var p1Pot = [];
+var p2Pot = [];
+var resolvedTiePot = []
+var resetTiePotBool = false;
+
+var potAreaDepthList = [potAreaDepth1, potAreaDepth2, potAreaDepth3, potAreaDepth4, 
+    potAreaDepth5, potAreaDepth6, potAreaDepth7]
+
+var totalPotArea = []
+
 
 /*###################################
 DECK FUNCTIONS
@@ -90,49 +121,17 @@ const createShuffledDeck = function(){
     //input: none
     //output: deck
     //doesn't change display
+
     const deck = [];
+    //array of integers from [0-52]
     const cardWeightList = [...Array(53).keys()]
+    //removes first item (0) from the array, so its [1-52]
     cardWeightList.splice(0,1)
     for (limit = 52; limit > 0; limit --){
         index = Math.floor(Math.random()*limit);
         deckWeight = cardWeightList[index];
         cardWeightList.splice(index,1);
-        if (deckWeight <= 13){
-            suit = "Heart";
-            suitWeight = deckWeight;
-        }
-        else if (deckWeight <= 26){
-            suit = "Spade";
-            suitWeight = deckWeight - 13;
-        }
-        else if (deckWeight <= 39){
-            suit = "Diamond";
-            suitWeight = deckWeight - 26;
-        }
-        else{
-            suit = "Club";
-            suitWeight = deckWeight - 39;
-        }
-
-        if (suitWeight === 13){
-            value = "Ace";
-        }
-        else if (suitWeight === 12){
-            value = "King";
-        }
-        else if (suitWeight === 11){
-            value = "Queen";
-        }
-        else if (suitWeight === 10){
-            value = "Jack";
-        }
-        else{
-            value = suitWeight + 1;
-            value = value.toString();
-        }
-        imageURL = value + suit[0];
-        //console.log(suit + ' ' + value)
-        let newCard = new playingCard(suit, value, suitWeight, deckWeight, imageURL);
+        newCard = getCardInfo(deckWeight);
         //console.log(newCard.name)
         deck.push(newCard)
     }
@@ -140,6 +139,62 @@ const createShuffledDeck = function(){
     return deck;
 }
 
+const getCardInfo = function(deckWeight){
+    if (deckWeight <= 13){
+        suit = "Heart";
+        suitWeight = deckWeight;
+    }
+    else if (deckWeight <= 26){
+        suit = "Spade";
+        suitWeight = deckWeight - 13;
+    }
+    else if (deckWeight <= 39){
+        suit = "Diamond";
+        suitWeight = deckWeight - 26;
+    }
+    else{
+        suit = "Club";
+        suitWeight = deckWeight - 39;
+    }
+
+    if (suitWeight === 13){
+        value = "Ace";
+    }
+    else if (suitWeight === 12){
+        value = "King";
+    }
+    else if (suitWeight === 11){
+        value = "Queen";
+    }
+    else if (suitWeight === 10){
+        value = "Jack";
+    }
+    else{
+        value = suitWeight + 1;
+        value = value.toString();
+    }
+    imageURL = value + suit[0];
+    //console.log(suit + ' ' + value)
+    let newCard = new playingCard(suit, value, suitWeight, deckWeight, imageURL);
+    
+    return newCard;
+}
+
+const createMiracleDeck = function(){
+    const p1Deck = [];
+    const p2Deck = [];
+
+    for (index = 52; index > 0; index--){
+        if (index > 26){
+            p1Deck.push(getCardInfo(index))
+        }
+        else{
+            p2Deck.push(getCardInfo(index))
+        }
+    }
+    const output = [p1Deck, p2Deck];
+    return output;
+}
 const shuffleCards = function(deck){
     //Input: deck
     //Output: deck
@@ -191,6 +246,7 @@ const testFunction = function(){
     //Output: 2 lists
     // change from outline cards to back of cards; Draw button appears
     deck = createShuffledDeck();
+    //playerDecks = createMiracleDeck();
     playerDecks = dealCards(deck);
     console.log(playerDecks[0].length)
     player1.deck = playerDecks[0];
@@ -198,21 +254,34 @@ const testFunction = function(){
     updateGameInfo()
     startGameButton.disabled = true;
     drawButton.disabled = false;
-    endGameButton.disabled = false;
-    
+    newGameButton.disabled = false;
+    p1CurrentCardHTML.src = "assets/images/playingCard.jpg"
+    p2CurrentCardHTML.src = "assets/images/playingCard.jpg"
     //alert("hello");
 }
 
 const drawFunction = function(){
+    let tieBool = false;
+
+    //reset tie pot cards if needed
+    //needed to be done the following round, after tie is resolved so the pot cards can be revealed
+    if (resetTiePotBool){
+        resetTiePot();
+        resetTiePotBool = false;
+    }
+
+    //shuffle decks if needed
     isEmptyDeck(player1)
     isEmptyDeck(player2)
 
+    //get cards
     let p1Card = player1.deck.pop();
     let p2Card = player2.deck.pop();
-    let cardPot = [p1Card, p2Card];
+    //add cards to pot
+    cardPot.push(p1Card); cardPot.push(p2Card);
     console.log([p1Card.name,p2Card.name])
 
-
+    //compare cards
     if (p1Card.weight > p2Card.weight){
         trickWinner = player1;
     }
@@ -223,12 +292,27 @@ const drawFunction = function(){
     else{
         console.log("there is a tie")
         messageHTML.innerHTML = "There is a tie"
-        //tieFunction(cardPot)
-        trickWinner = player1;
-    }
+        tieBool = true;
 
-    roundOver(trickWinner, cardPot);
-  
+    }
+    //if there is a tie...
+    if (tieBool){
+        cards = tieFunction()
+    }
+    //if there isn't a tie ~ round decided
+    else{
+        //if there was a tie the previous round
+        if (tieDepth > 0){
+            revealPotCards()
+            //reset tie global variables
+            resetTiePotBool = true;
+            p1Pot = []; p2Pot = []
+            tieDepth = 0
+            totalPotArea = []
+        }
+        roundOver();
+    }
+    
     p1CurrentCardHTML.src = p1Card.imageSource;
     p2CurrentCardHTML.src = p2Card.imageSource;
     updateGameInfo()
@@ -236,7 +320,8 @@ const drawFunction = function(){
     gameOver(player2)
 }
 
-const displayCards = function(cardList){
+const displayCards = function(playerCardList){
+    cardList = Array.from(playerCardList)
 
     let newLineBool = false;
     let currentSuit = ''
@@ -268,55 +353,100 @@ const displayCards = function(cardList){
     }
 }
 
+const newGame = function(){
+    let response = confirm("This will reload the page.")
+    if (response){
+        location.reload();
+        return false;
+    }
+} 
+
 /*###################################
 TIE FUNCTIONS
 ####################################*/
 
-const tieFunction = function(cardPot){
-    cardPot = tieFunction_getCards(cardPot)
-}
+const tieFunction = function(){
+    //when a player is almost out of cards...
+    let min = Math.min(player1.totalCards, player2.totalCards);
 
-const tieFunction_getCards = function(player, cardPot){
-    //Get player1's Cards
-    const p1CardPot = [];
-
-    //normal
-    if (player.deckLength >= 4){
-        for (x = 0; x < 4; x++){
-            cardPot.push(player.deck.pop())
-        }
+    //The flop the resulted in a tie was the player's last card
+    if (min === 0){
+        console.log('diaper')
+        gameOver(player1)
+        gameOver(player2)
     }
-
-    else if ((p1PILE.length + p1DECK.length) >= 4){
-        p1DECK = shuffleCards(p1PILE);
-        p1PILE = [];
-        for (x = 0; x < 4; x++){
-            p1CardPot.push(p1DECK.pop())
-        }
+    //Have 1 remaining ~ can't put any cards face down
+    else if (min === 1){
     }
-    else if (((p1PILE.length + p1DECK.length) > 0) && ((p1PILE.length + p1DECK.length) < 4)){}
-
     else{
-        gameOver()
+        //normal case
+        if (min >= 4){
+            min = 4;
+        }
+        currentPotArea = potAreaDepthList[tieDepth]
+
+        //unhide blank cards
+        if (tieDepth >= 1){
+            for (index = 0; index < currentPotArea.length; index++){
+                currentPotArea[index].style.display = "inline-block";
+            }
+        }
+    
+        let potCardIndex = 0
+        for (let x = 0; x < min - 1; x++){
+            console.log('okay')
+            //check for shuffle
+            isEmptyDeck(player1)
+            isEmptyDeck(player2)
+            //get player1Card
+            tmp = player1.deck.pop()
+            //add card to whole pot, and player-specific pot
+            cardPot.push(tmp); p1Pot.push(tmp)
+            //get player2Card
+            tmp = player2.deck.pop()
+            //add card to whole pot, and player-specific pot
+            cardPot.push(tmp); p2Pot.push(tmp)
+            //Display pot Cards
+            currentPotArea[potCardIndex].src = "assets/images/playingCard.jpg"
+            currentPotArea[potCardIndex + 1].src = "assets/images/playingCard.jpg"
+            potCardIndex += 2
+        }
+        totalPotArea = totalPotArea.concat(currentPotArea);
+        tieDepth = tieDepth + 1;
     }
 }
+
 
 
 /*###################################
 OTHER HELPER FUNCTIONS
 ####################################*/
 
-const roundOver = function(trickWinner, cardPot){
+const roundOver = function(){
     trickWinner.pile = trickWinner.pile.concat(cardPot);
     console.log(trickWinner.string);
     messageHTML.innerHTML = trickWinner.string + " won the trick";
+    cardPot = [];
 
 }
 
 const gameOver = function(player){
-    if (player.totalCards === 0){
-        messageHTML.innerHTML = "The Game is over. " + player.opponent + "wins!";
+    let gameOverBool = false;
+
+    if ((player1.totalCards === 0) && (player2.totalCards === 0)){
+        messageHTML.innerHTML = "The Game is over. Both players lose."
+        gameOverBool = true;
+    }
+    else if (player.totalCards === 0){
+        messageHTML.innerHTML = "The Game is over. " + player.opponent + " wins!";
+        gameOverBool = true;
+    }
+
+    if (gameOverBool){
         drawButton.disabled = true;
+        if (totalPotArea.length > 0){
+            revealPotCards()
+        }
     }
 }
 
@@ -336,6 +466,40 @@ const updateGameInfo = function(){
     p2PileLengthHTML.innerHTML = 'Cards in Pile: ' + player2.pileLength;
 }
 
+const combineTiePots = function(){
+    resolvedTiePot = [];
+    let limit = p1Pot.length + p2Pot.length
+    let popP1Bool = false;
 
+    for (x = 0; x < limit; x++){
+        if (x % 3 === 0){
+            popP1Bool = !popP1Bool;
+        }
+        if (popP1Bool){
+            resolvedTiePot.push(p1Pot.shift());
+        }
+        else{
+            resolvedTiePot.push(p2Pot.shift());
+        }
 
+    }
+}
 
+const revealPotCards = function(){
+    combineTiePots();
+    for (index = 0; index < resolvedTiePot.length; index++){
+        totalPotArea[index].src = resolvedTiePot[index].imageSource
+    }
+
+}
+
+const resetTiePot = function(){
+    let imageList = potAreaDepth1;
+
+    for (index = 0; index < imageList.length; index++){
+        imageList[index].src = "assets/images/blankCard2.png";
+    }
+    for (index = 0; index < extraPotArea.length; index++){
+        extraPotArea[index].style.display = "none";    
+    }
+}

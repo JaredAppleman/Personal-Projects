@@ -39,22 +39,22 @@
 
             <!-- Left Card-->
             <div class="col-sm-5 currentCard">
-                <img id="p1CurrentCard" class="p1CurrentCardURL" src="assets/images/playingCard.jpg">
+                <img id="p1CurrentCard" class="p1CurrentCardURL" src="assets/images/blankCard2.png">
                 <p class="cardInfo"></p>
             </div>
             <!-- Game Info/Announcements-->
             <div class="col-sm-2 announcement">
                 <div class="row">
                     <p id="message">Welcome</p>
+                    <button disabled  type="button" id="newGameButton" onclick="newGame()">New Game</button>
                     <button type="button" id="startGameButton" onclick="testFunction()">Start Game</button>
-                    <button disabled type="button" id="drawButton" onclick="drawFunction()">Draw</button>
-                    <button disabled class="last" type="button" id="endGameButton">End Game</button>
+                    <button disabled class="last" type="button" id="drawButton" onclick="drawFunction()">Draw</button>
                 </div>
                 
             </div>
             <!-- Right Card-->
             <div class="col-sm-5 currentCard">
-                <img id="p2CurrentCard" src="assets/images/playingCard.jpg">
+                <img id="p2CurrentCard" src="assets/images/blankCard2.png">
                 <p class="p2CurrentCard cardInfo"></p>
             </div>
 
@@ -64,35 +64,66 @@
         <div class="row">
 
             <!-- Player1's pot -->
-            <div class="col-sm-6 potArea">
-                <img class="p1-1 pot" src="assets/images/PlayingCardsAlbum/JackC.jpg">
-                <img class="p1-2 pot" src="assets/images/playingCard.jpg">
-                <img class="p1-3 pot last" src="assets/images/blankCard2.png">
+            <div class="col-sm-6 p1PotArea">
+                <img class="p1-1 pot tieDepth-1" src="assets/images/blankCard2.png">
+                <img class="p1-2 pot tieDepth-1" src="assets/images/blankCard2.png">
+                <img class="p1-3 pot tieDepth-1 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-4 pot extra tieDepth-2" src="assets/images/blankCard2.png">
+                <img class="p1-5 pot extra tieDepth-2" src="assets/images/blankCard2.png">
+                <img class="p1-6 pot extra tieDepth-2 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-7 pot extra tieDepth-3" src="assets/images/blankCard2.png">
+                <img class="p1-8 pot extra tieDepth-3" src="assets/images/blankCard2.png">
+                <img class="p1-9 pot extra tieDepth-3 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-10 pot extra tieDepth-4" src="assets/images/blankCard2.png">
+                <img class="p1-11 pot extra tieDepth-4" src="assets/images/blankCard2.png">
+                <img class="p1-12 pot extra tieDepth-4 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-13 pot extra tieDepth-5" src="assets/images/blankCard2.png">
+                <img class="p1-14 pot extra tieDepth-5" src="assets/images/blankCard2.png">
+                <img class="p1-15 pot extra tieDepth-5 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-16 pot extra tieDepth-6" src="assets/images/blankCard2.png">
+                <img class="p1-17 pot extra tieDepth-6" src="assets/images/blankCard2.png">
+                <img class="p1-18 pot extra tieDepth-6 last" src="assets/images/blankCard2.png">
+
+                <img class="p1-19 pot extra tieDepth-7" src="assets/images/blankCard2.png">
+                <img class="p1-20 pot extra tieDepth-7" src="assets/images/blankCard2.png">
+                <img class="p1-21 pot extra tieDepth-7 last" src="assets/images/blankCard2.png">
+
             </div>
             
             <!-- Player2's pot -->
-            <div class="col-sm-6 potArea">
-                <img class="p2-1 pot" src="assets/images/blankCard2.png">
-                <img class="p2-2 pot" src="assets/images/blankCard2.png">
-                <img class="p2-3 pot last" src="assets/images/blankCard2.png">
-            </div>
-        </div>
+            <div class="col-sm-6 p2PotArea">
+                <img class="p2-1 pot tieDepth-1" src="assets/images/blankCard2.png">
+                <img class="p2-2 pot tieDepth-1" src="assets/images/blankCard2.png">
+                <img class="p2-3 pot tieDepth-1 last" src="assets/images/blankCard2.png">
 
-        <!-- Pot Area for double Tie (initially hidden)-->
-        <div class="row extraTie">
+                <img class="p2-4 pot extra tieDepth-2" src="assets/images/blankCard2.png">
+                <img class="p2-5 pot extra tieDepth-2" src="assets/images/blankCard2.png">
+                <img class="p2-6 pot extra tieDepth-2 last" src="assets/images/blankCard2.png">
 
-            <!-- Player1's pot -->
-            <div class="col-sm-6 potArea">
-                <img class="p1-1 pot" src="assets/images/blankCard2.png">
-                <img class="p1-2 pot" src="assets/images/blankCard2.png">
-                <img class="p1-3 pot" src="assets/images/blankCard2.png">
-            </div>
-            
-            <!-- Player2's pot -->
-            <div class="col-sm-6 potArea">
-                <img class="p2-1 pot" src="assets/images/PlayingCardsAlbum/10H.jpg">
-                <img class="p2-2 pot" src="assets/images/blankCard2.png">
-                <img class="p2-3 pot last" src="assets/images/blankCard2.png">
+                <img class="p2-7 pot extra tieDepth-3" src="assets/images/blankCard2.png">
+                <img class="p2-8 pot extra tieDepth-3" src="assets/images/blankCard2.png">
+                <img class="p2-9 pot extra tieDepth-3 last" src="assets/images/blankCard2.png">
+
+                <img class="p2-10 pot extra tieDepth-4" src="assets/images/blankCard2.png">
+                <img class="p2-11 pot extra tieDepth-4" src="assets/images/blankCard2.png">
+                <img class="p2-12 pot extra tieDepth-4 last" src="assets/images/blankCard2.png">
+
+                <img class="p2-13 pot extra tieDepth-5" src="assets/images/blankCard2.png">
+                <img class="p2-14 pot extra tieDepth-5" src="assets/images/blankCard2.png">
+                <img class="p2-15 pot extra tieDepth-5 last" src="assets/images/blankCard2.png">
+
+                <img class="p2-16 pot extra tieDepth-6" src="assets/images/blankCard2.png">
+                <img class="p2-17 pot extra tieDepth-6" src="assets/images/blankCard2.png">
+                <img class="p2-18 pot extra tieDepth-6 last" src="assets/images/blankCard2.png">
+
+                <img class="p2-19 pot extra tieDepth-7" src="assets/images/blankCard2.png">
+                <img class="p2-20 pot extra tieDepth-7" src="assets/images/blankCard2.png">
+                <img class="p2-21 pot extra tieDepth-7 last" src="assets/images/blankCard2.png">
             </div>
         </div>
 
