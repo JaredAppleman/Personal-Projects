@@ -101,15 +101,11 @@ var player2 = new player("Player2");
 var cardPot = [];
 var trickWinner;
 
-var tieDepth = 0;
-var p1Pot = [];
-var p2Pot = [];
-var resolvedTiePot = []
-var resetTiePotBool = false;
-
 var potAreaDepthList = [potAreaDepth1, potAreaDepth2, potAreaDepth3, potAreaDepth4, 
-    potAreaDepth5, potAreaDepth6, potAreaDepth7]
-
+    potAreaDepth5, potAreaDepth6, potAreaDepth7];
+var tieDepth = 0;
+var resetTiePotBool = false
+var flopPotCards = [];
 var totalPotArea = []
 
 
@@ -181,9 +177,34 @@ const getCardInfo = function(deckWeight){
 }
 
 const createMiracleDeck = function(){
+    //custom decks for testing
     const p1Deck = [];
     const p2Deck = [];
 
+/*     //last 12 cards
+    p1Deck.push(getCardInfo(49))
+    p1Deck.push(getCardInfo(48))
+    p1Deck.push(getCardInfo(47))
+    p1Deck.push(getCardInfo(50))
+    p1Deck.push(getCardInfo(51))
+    p1Deck.push(getCardInfo(52))
+    //1 Card tie: 26, 22, 21, 23, 24, 25
+    //2 Card tie: 26. 22. 21. 24. 23. 25
+    p2Deck.push(getCardInfo(26))
+    p2Deck.push(getCardInfo(22))
+    p2Deck.push(getCardInfo(21))
+    p2Deck.push(getCardInfo(24))
+    p2Deck.push(getCardInfo(23))
+    p2Deck.push(getCardInfo(25))
+
+    for (index = 52; index > 0; index--){
+        if ((index > 26) && (index < 47)){
+            p1Deck.push(getCardInfo(index))
+        }
+        else if (index < 21){
+            p2Deck.push(getCardInfo(index))
+        }
+    } */
     for (index = 52; index > 0; index--){
         if (index > 26){
             p1Deck.push(getCardInfo(index))
@@ -306,8 +327,9 @@ const drawFunction = function(){
             revealPotCards()
             //reset tie global variables
             resetTiePotBool = true;
-            p1Pot = []; p2Pot = []
+            //p1Pot = []; p2Pot = []
             tieDepth = 0
+            flopPotCards = []
             totalPotArea = []
         }
         roundOver();
@@ -371,7 +393,6 @@ const tieFunction = function(){
 
     //The flop the resulted in a tie was the player's last card
     if (min === 0){
-        console.log('diaper')
         gameOver(player1)
         gameOver(player2)
     }
@@ -395,23 +416,39 @@ const tieFunction = function(){
         let potCardIndex = 0
         for (let x = 0; x < min - 1; x++){
             console.log('okay')
+            console.log(potCardIndex)
             //check for shuffle
             isEmptyDeck(player1)
             isEmptyDeck(player2)
+
+            //Get player cards and add to pot
             //get player1Card
             tmp = player1.deck.pop()
-            //add card to whole pot, and player-specific pot
-            cardPot.push(tmp); p1Pot.push(tmp)
+            console.log(tmp.name)
+            //add card to whole pot, tie flop pot
+            flopPotCards.push(tmp)
+            cardPot.push(tmp);
             //get player2Card
             tmp = player2.deck.pop()
-            //add card to whole pot, and player-specific pot
-            cardPot.push(tmp); p2Pot.push(tmp)
+            console.log(tmp.name)
+            //add card to whole pot, and tie flop pot
+            cardPot.push(tmp); 
+            flopPotCards.push(tmp)
+
             //Display pot Cards
-            currentPotArea[potCardIndex].src = "assets/images/playingCard.jpg"
-            currentPotArea[potCardIndex + 1].src = "assets/images/playingCard.jpg"
-            potCardIndex += 2
+            tmpPotCardDom = currentPotArea[potCardIndex]
+            //add card to tie flop Dom list
+            totalPotArea.push(tmpPotCardDom)
+            //display card
+            tmpPotCardDom.src = "assets/images/playingCard.jpg"
+            tmpPotCardDom = currentPotArea[potCardIndex+3]
+            //add card to tie flop Dom list
+            totalPotArea.push(tmpPotCardDom)
+            //display card
+            tmpPotCardDom.src = "assets/images/playingCard.jpg"
+            potCardIndex += 1
         }
-        totalPotArea = totalPotArea.concat(currentPotArea);
+        
         tieDepth = tieDepth + 1;
     }
 }
@@ -452,9 +489,11 @@ const gameOver = function(player){
 
 const isEmptyDeck = function(player){
     if (player.deckLength === 0){
+        console.log("player had "+player.pileLength+"cards in their pile")
         player.deck = shuffleCards(player.pile);
         player.pile = [];
         console.log(player.string+" shuffled")
+
     }
 }
 
@@ -466,31 +505,10 @@ const updateGameInfo = function(){
     p2PileLengthHTML.innerHTML = 'Cards in Pile: ' + player2.pileLength;
 }
 
-const combineTiePots = function(){
-    resolvedTiePot = [];
-    let limit = p1Pot.length + p2Pot.length
-    let popP1Bool = false;
-
-    for (x = 0; x < limit; x++){
-        if (x % 3 === 0){
-            popP1Bool = !popP1Bool;
-        }
-        if (popP1Bool){
-            resolvedTiePot.push(p1Pot.shift());
-        }
-        else{
-            resolvedTiePot.push(p2Pot.shift());
-        }
-
-    }
-}
-
 const revealPotCards = function(){
-    combineTiePots();
-    for (index = 0; index < resolvedTiePot.length; index++){
-        totalPotArea[index].src = resolvedTiePot[index].imageSource
+    for (index = 0; index < flopPotCards.length; index++){
+        totalPotArea[index].src = flopPotCards[index].imageSource
     }
-
 }
 
 const resetTiePot = function(){
