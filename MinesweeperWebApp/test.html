@@ -3,7 +3,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>War</title>
+      <title>Minesweeper</title>
       <!-- Bootstrap -->
       <link rel="stylesheet" 
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
@@ -22,58 +22,78 @@
    grid-template-rows: auto auto auto auto auto auto;
    background-color: orange;
    padding: 10px;
-   height: 600px;
    width: 100%;
 
 }
 .grid-item{
-   background-color:green;
+   background-color:white;
    border: 1px solid black;
    text-align: center;
+}
+.logo{
+   color: orange;
+   background-color: black;
+   padding: 5px;
+}
+.website{
+   background-color: orange;
+   margin: 0;
+}
+.heading{
+   text-align: center;
+   margin-bottom: 25px;
+}
+.container{
+   max-width: 960px;
+   min-width: 320px;
+
 }
 </style>
 </head>
 
 <body>
-<h1>MineSweeper</h1>
+   <div class="heading">
+      <h1 class="website">MineSweeper</h1>
+      <h6 class="logo">StealthyTiger Programming</h6>
+   </div>
 <div class="container">
 <div class="grid-container">
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
-   <div class="grid-item" id="grid-item" type="button" onclick="test()"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(1)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(2)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(3)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(4)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(5)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(6)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(7)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(8)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(9)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(10)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(11)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(12)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(13)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(14)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(15)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(16)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(17)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(18)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(19)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(20)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(21)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(22)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(23)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(24)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(25)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(26)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(27)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(28)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(29)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(30)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(31)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(32)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(33)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(34)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(35)"></div>
+   <div class="grid-item" id="grid-item" type="button" onclick="test(36)"></div>
 
 
 </div>

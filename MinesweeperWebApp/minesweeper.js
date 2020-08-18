@@ -1,5 +1,6 @@
 
-let gridContainer = document.querySelector('.grid-container');
+var gridContainer = document.querySelector('.grid-container');
+var gridItemDomList = document.querySelectorAll('.grid-item');
 
 const windowResize = function(){
     console.log('okay')
@@ -11,8 +12,9 @@ const startFunction = function(){
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
 
 }
-const test = function(){
-    
+const test = function(gridItemNumber){
+    gridItem = gridItemDomList[gridItemNumber-1];
+    gridItem.style.background = "orange";
 }
 
 startFunction()
