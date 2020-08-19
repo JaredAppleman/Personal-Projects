@@ -2,4 +2,5 @@ Author: Jared Appleman
 
 Description: Simple 6x6 minesweeper game. HTML, CSS, Javascript
 
-Progress: Unfinished, Initial HTML and CSS is done. In the process of diagramming the objects/functions.
+Progress: Unfinished, A lot of the functionality is done.
+To do: finish flag functionality, gameOver(win/lose), fontawesome(download locally for offline), finishing touches
