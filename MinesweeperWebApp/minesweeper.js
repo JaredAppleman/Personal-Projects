@@ -8,6 +8,7 @@ var gridContainer = document.querySelector('.grid-container');
 var gridItemDomList = document.querySelectorAll('.grid-item');
 var gridItemParList = document.querySelectorAll('.grid-item p');
 var flagButtonDom = document.querySelector('flagButton')
+var emojiDom = document.querySelector('#emoji')
 
 /*###################################
 CLASSES
@@ -22,7 +23,7 @@ class square{
         this.isWarning;
         this.isSafe;
         this.row = row;
-        this.column = col;
+        this.col = col;
 
         this.wallList = getWallList(this.row, this.col)
 
@@ -32,31 +33,31 @@ class square{
 
 
     get getNeighbors(){
-        var neighborList = []
+        let neighborList = []
 
         if (!(this.wallList.includes('topLeft'))){
-            neighborList.push(squareObjectList[this.row - 1][this.column - 1])
+            neighborList.push(squareObjectList[this.row - 1][this.col - 1])
         }
         if (!(this.wallList.includes('top'))){
-            neighborList.push(squareObjectList[this.row - 1][this.column])
+            neighborList.push(squareObjectList[this.row - 1][this.col])
         }
         if (!(this.wallList.includes('topRight'))){
-            neighborList.push(squareObjectList[this.row - 1][this.column + 1])
+            neighborList.push(squareObjectList[this.row - 1][this.col + 1])
         }
         if (!(this.wallList.includes('right'))){
-            neighborList.push(squareObjectList[this.row][this.column + 1])
+            neighborList.push(squareObjectList[this.row][this.col + 1])
         }
         if (!(this.wallList.includes('bottomRight'))){
-            neighborList.push(squareObjectList[this.row + 1][this.column + 1])
+            neighborList.push(squareObjectList[this.row + 1][this.col + 1])
         }
         if (!(this.wallList.includes('bottom'))){
-            neighborList.push(squareObjectList[this.row + 1][this.column])
+            neighborList.push(squareObjectList[this.row + 1][this.col])
         }
         if (!(this.wallList.includes('bottomLeft'))){
-            neighborList.push(squareObjectList[this.row + 1][this.column - 1])
+            neighborList.push(squareObjectList[this.row + 1][this.col - 1])
         }
         if (!(this.wallList.includes('left'))){
-            neighborList.push(squareObjectList[this.row][this.column - 1])
+            neighborList.push(squareObjectList[this.row][this.col - 1])
         }
         return neighborList;
     }
@@ -80,7 +81,7 @@ const flagButton = function(){
 }
 
 const getWallList = function(row, col){
-    var wallList = [];
+    let wallList = [];
     if (row === 0){
         wallList = arrayUnion(wallList,['topLeft', 'top', 'topRight'])   
     }
@@ -105,6 +106,7 @@ const arrayUnion = function(list1, list2){
     }
     return list1
 }
+
 
 const warningIndexHelper = function(warningIndex){
     //Input: Index of a warning square
@@ -143,7 +145,7 @@ const getWarningIndexes = function(wallList, bombIndex){
     if (!(wallList.includes('left'))){
         warningIndexHelper(bombIndex - 1)
     }
-    console.log(warningIndexList)
+    //console.log(warningIndexList)
 }
 
 
@@ -152,9 +154,10 @@ GLOBAL VARIABLES
 ####################################*/
 squareObjectList = [];
 bombSquareList = []
-warningSquareList = []
+//warningSquareList = []
 
 var unHiddenWarningList = [];
+var lockedSquareList = [];
 
 var bombIndexList = [];
 var warningIndexList = [];
@@ -168,6 +171,7 @@ const fontLeaf = '<i class="fas fa-leaf"></i>'
 const fontSuprise = '<i class="far fa-surprise"></i>'
 const fontSmile = '<i class="far fa-smile"></i>'
 const fontSad = '<i class="far fa-sad-tear"></i>'
+const fontLaugh = '<i class="far fa-laugh-beam"></i>'
 
 /*###################################
 FUNCTIONS
@@ -222,7 +226,10 @@ const startFunction = function(){
     } 
 }
 
-
+const lockSquare = function(square){
+    square.domObject.disabled = true;
+    lockedSquareList.push(square);
+}
 
 const squareClick = function(gridItemNumber){
     let row = Math.floor(gridItemNumber / 6);
@@ -232,21 +239,68 @@ const squareClick = function(gridItemNumber){
     if (squareObject.isMine){
         squareObject.domObject.style.background = "red";
         if (flagButtonBool){
-            squareObject.gridParObject.innerHTML = '<i class="fas fa-flag"></i>'
+            squareObject.gridParObject.innerHTML = fontFlag;
         }
         else{
-            squareObject.gridParObject.innerHTML = '<i class="fas fa-bomb"></i>'
+            squareObject.gridParObject.innerHTML = fontBomb;
         }
         width = squareObject.domObject.offsetWidth - 15
         squareObject.gridParObject.style.fontSize = width.toString() + 'px';
         unHiddenWarningList.push(squareObject)
     }
     else if (squareObject.isWarning){
-        squareObject.domObject.style.background = "orange";
+        emojiDom.innerHTML = fontSuprise;
+        setTimeout(revertEmoji,750)
+        squareObject.domObject.style.background = "lightGray";
+        squareObject.gridParObject.innerHTML = bombCount(squareObject.getNeighbors)
+        width = squareObject.domObject.offsetWidth - 15
+        squareObject.gridParObject.style.fontSize = width.toString() + 'px';
+        lockSquare(squareObject)
     }
     else{
-        squareObject.domObject.style.background = "green";
+        emojiDom.innerHTML = fontSuprise;
+        setTimeout(revertEmoji,750)
+        squareObject.domObject.style.background = "lightGray";
+        lockSquare(squareObject);
+        let neighborList = squareObject.getNeighbors;
+        safeSquareFunction(neighborList);
     }
+}
+
+const bombCount = function(neighborList){
+    bombs = 0;
+    for (index = 0; index < neighborList.length; index++){
+        threat = neighborList[index];
+        if (threat.isMine){
+            bombs += 1;
+        }
+    }
+    return bombs;
+}
+
+const safeSquareFunction = function(neighborList){
+    const checkedSquares = [];
+    while (neighborList.length > 0){
+        currentNeighbor = neighborList.shift();
+        if ((currentNeighbor.isWarning) && (!(lockedSquareList.includes(currentNeighbor)))){
+            currentNeighbor.domObject.style.background = "lightGray";
+            currentNeighbor.gridParObject.innerHTML = bombCount(currentNeighbor.getNeighbors)
+        }
+        else if (currentNeighbor.isSafe){
+            currentNeighbor.domObject.style.background = "lightGray";
+            newNeighbors = currentNeighbor.getNeighbors
+            for (index = 0; index < newNeighbors.length; index++){
+                if (!(lockedSquareList.includes(newNeighbors[index])) && (!(neighborList.includes(newNeighbors[index])))){
+                    neighborList.push(newNeighbors[index])
+                }
+            }
+        }
+        lockSquare(currentNeighbor);
+    }
+}
+
+const revertEmoji = function(){
+    emojiDom.innerHTML = fontSmile;
 }
 
 const plantBombs = function(){
@@ -261,9 +315,9 @@ const plantBombs = function(){
         //have bombIndex
         let row = Math.floor(bombIndex / 6);
         let col = bombIndex % 6;
-        console.log(bombIndex)
+        //console.log(bombIndex)
         wallList = getWallList(row,col);
-        console.log(wallList)
+        //console.log(wallList)
         getWarningIndexes(wallList, bombIndex);
         if (warningIndexList.includes(bombIndex)){
             warningIndexList.splice(warningIndexList.indexOf(bombIndex),1)
