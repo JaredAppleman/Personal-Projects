@@ -7,7 +7,7 @@ DOM variables
 var gridContainer = document.querySelector('.grid-container');
 var gridItemDomList = document.querySelectorAll('.grid-item');
 var gridItemParList = document.querySelectorAll('.grid-item p');
-var flagButtonDom = document.querySelector('flagButton')
+var flagButtonDom = document.querySelector('#flagButton')
 var emojiDom = document.querySelector('#emoji')
 
 /*###################################
@@ -24,6 +24,7 @@ class square{
         this.isSafe;
         this.row = row;
         this.col = col;
+        this.isFlagged = false;
 
         this.wallList = getWallList(this.row, this.col)
 
@@ -71,12 +72,21 @@ class square{
     set is_Safe(bool){
         this.isSafe = bool;
     }
+    set is_flagged(bool){
+        this.isFlagged = bool;
+    }
 
 
 }
 
 const flagButton = function(){
     flagButtonBool = !flagButtonBool
+    if (flagButtonBool){
+        flagButtonDom.style.color = 'red'
+    }
+    else{
+        flagButtonDom.style.color = 'initial'
+    }
     console.log(flagButtonBool)
 }
 
@@ -155,8 +165,9 @@ GLOBAL VARIABLES
 squareObjectList = [];
 bombSquareList = []
 //warningSquareList = []
+var loss = false;
 
-var unHiddenWarningList = [];
+var hasTextList = [];
 var lockedSquareList = [];
 
 var bombIndexList = [];
@@ -170,7 +181,7 @@ const fontLightning = '<i class="fas fa-bolt"></i>'
 const fontLeaf = '<i class="fas fa-leaf"></i>'
 const fontSuprise = '<i class="far fa-surprise"></i>'
 const fontSmile = '<i class="far fa-smile"></i>'
-const fontSad = '<i class="far fa-sad-tear"></i>'
+const fontSad = '<i class="far fa-frown-open"></i>'
 const fontLaugh = '<i class="far fa-laugh-beam"></i>'
 
 /*###################################
@@ -180,8 +191,8 @@ FUNCTIONS
 const windowResize = function(){
     console.log('okay')
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
-    for (index = 0; index < unHiddenWarningList.length; index ++){
-        let squareObject = unHiddenWarningList[index];
+    for (index = 0; index < hasTextList.length; index ++){
+        let squareObject = hasTextList[index];
         width = squareObject.domObject.offsetWidth - 15
         squareObject.gridParObject.style.fontSize = width.toString() + 'px';
     }
@@ -236,34 +247,115 @@ const squareClick = function(gridItemNumber){
     let col = gridItemNumber % 6;
     let squareObject = squareObjectList[row][col];
     console.log(squareObject)
-    if (squareObject.isMine){
-        squareObject.domObject.style.background = "red";
-        if (flagButtonBool){
-            squareObject.gridParObject.innerHTML = fontFlag;
+    if (flagButtonBool){
+        if (squareObject.isFlagged){
+            squareObject.gridParObject.style.color = 'initial'
+            squareObject.gridParObject.innerHTML = '';
+            squareObject.is_flagged = false;
         }
         else{
-            squareObject.gridParObject.innerHTML = fontBomb;
+            width = squareObject.domObject.offsetWidth - 15
+            squareObject.gridParObject.style.fontSize = width.toString() + 'px';
+            hasTextList.push(squareObject)
+            squareObject.gridParObject.style.color = 'red'
+            squareObject.gridParObject.innerHTML = fontFlag;
+            squareObject.is_flagged = true;
         }
+    }
+    else if (squareObject.isMine){
+        loss = true;
+        gameOver()
+        squareObject.domObject.style.background = "red";
+
+        squareObject.gridParObject.innerHTML = fontBomb;
+        
         width = squareObject.domObject.offsetWidth - 15
         squareObject.gridParObject.style.fontSize = width.toString() + 'px';
-        unHiddenWarningList.push(squareObject)
+        hasTextList.push(squareObject)
+        emojiDom.innerHTML = fontSuprise;
+        setTimeout(isOver,750)
     }
     else if (squareObject.isWarning){
-        emojiDom.innerHTML = fontSuprise;
-        setTimeout(revertEmoji,750)
         squareObject.domObject.style.background = "lightGray";
-        squareObject.gridParObject.innerHTML = bombCount(squareObject.getNeighbors)
+        numberOfBombs = bombCount(squareObject.getNeighbors)
+        numberColor(squareObject, numberOfBombs)
+        squareObject.gridParObject.innerHTML = numberOfBombs
+        
         width = squareObject.domObject.offsetWidth - 15
         squareObject.gridParObject.style.fontSize = width.toString() + 'px';
+        hasTextList.push(squareObject)
         lockSquare(squareObject)
+        emojiDom.innerHTML = fontSuprise;
+        setTimeout(isOver,750)
     }
     else{
-        emojiDom.innerHTML = fontSuprise;
-        setTimeout(revertEmoji,750)
         squareObject.domObject.style.background = "lightGray";
         lockSquare(squareObject);
         let neighborList = squareObject.getNeighbors;
         safeSquareFunction(neighborList);
+        emojiDom.innerHTML = fontSuprise;
+        setTimeout(isOver,750)
+    }
+
+    console.log(lockedSquareList)
+}
+const numberColor = function(square,numberOfBombs){
+    let color;
+    if (numberOfBombs === 1){
+        color = 'blue'
+    }
+    else if (numberOfBombs === 2){
+        color = 'green'
+    }
+    else if (numberOfBombs === 3){
+        color = 'yellow'
+    }
+    else if (numberOfBombs === 4){
+        color = 'orange'
+    }
+    else if (numberOfBombs === 5){
+        color = 'red'
+    }
+    else{
+        color = 'black'
+    }
+    square.gridParObject.style.color = color
+
+}
+const isOver = function(){
+    if (lockedSquareList.length === 30){
+        emojiDom.innerHTML = fontLaugh;
+        gameOver()
+    }
+    else if (loss){
+        emojiDom.innerHTML = fontSad;
+    
+    }
+    else{
+        emojiDom.innerHTML = fontSmile;
+    }
+}
+const gameOver = function(){
+    for (row = 0; row < 6; row++){
+        for(col = 0; col < 6; col++){
+            let squareObject = squareObjectList[row][col];
+            if (squareObject.isMine){
+                if (loss){
+                    squareObject.gridParObject.style.color = 'initial'
+                    squareObject.gridParObject.innerHTML = fontBomb;
+                }
+                else{
+                    squareObject.gridParObject.style.color = 'red'
+                    squareObject.gridParObject.innerHTML = fontFlag;
+                }
+                width = squareObject.domObject.offsetWidth - 15
+                squareObject.gridParObject.style.fontSize = width.toString() + 'px';
+                lockSquare(squareObject)
+            }
+            else if (!(lockedSquareList.includes(squareObject))){
+                lockSquare(squareObject)
+            }
+        }
     }
 }
 
@@ -284,7 +376,13 @@ const safeSquareFunction = function(neighborList){
         currentNeighbor = neighborList.shift();
         if ((currentNeighbor.isWarning) && (!(lockedSquareList.includes(currentNeighbor)))){
             currentNeighbor.domObject.style.background = "lightGray";
-            currentNeighbor.gridParObject.innerHTML = bombCount(currentNeighbor.getNeighbors)
+            width = currentNeighbor.domObject.offsetWidth - 15
+            currentNeighbor.gridParObject.style.fontSize = width.toString() + 'px';
+            hasTextList.push(currentNeighbor)
+            numberOfBombs = bombCount(currentNeighbor.getNeighbors)
+            numberColor(currentNeighbor, numberOfBombs)
+            currentNeighbor.gridParObject.innerHTML = numberOfBombs
+            lockSquare(currentNeighbor);
         }
         else if (currentNeighbor.isSafe){
             currentNeighbor.domObject.style.background = "lightGray";
@@ -294,15 +392,15 @@ const safeSquareFunction = function(neighborList){
                     neighborList.push(newNeighbors[index])
                 }
             }
+            lockSquare(currentNeighbor);
         }
-        lockSquare(currentNeighbor);
     }
 }
 
-const revertEmoji = function(){
-    emojiDom.innerHTML = fontSmile;
+const refreshPage = function(){
+    location.reload();
+    return false;
 }
-
 const plantBombs = function(){
 //Output: list of 6 unique numbers [0-35]
 

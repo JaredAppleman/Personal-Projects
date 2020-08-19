@@ -70,6 +70,13 @@ body{
 }
 .emoji{
    font-size: 120px;
+   display:inline-block;
+}
+button:disabled{
+   color: initial;
+}
+.gameInfo{
+   text-align:center;
 }
 </style>
 </head>
@@ -79,8 +86,12 @@ body{
       <h1 class="website">MineSweeper</h1>
       <h6 class="logo"><i class="fas fa-paw"></i>StealthyTiger Programming<i class="fas fa-paw"></i></h6>
    </div>
-   <button id="flagButton" type="button" onclick="flagButton()">okay</button>
-   <p class="emoji" id="emoji"><i class="far fa-smile"></i></p>
+
+   <div class="gameInfo">
+      <p class="emoji" id="emoji" type="button" onclick="refreshPage()"><i class="far fa-smile"></i></p>
+      <button id="flagButton" type="button" onclick="flagButton()"><i class="fas fa-flag"></i></button>
+   </div>
+
 <div class="container">
 <div class="grid-container">
    <button class="grid-item" id="grid-item" type="button" onclick="squareClick(0)"><p></p></button>
