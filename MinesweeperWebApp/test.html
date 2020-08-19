@@ -4,6 +4,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Minesweeper</title>
+      <script src="https://kit.fontawesome.com/bb6466ed8c.js" crossorigin="anonymous"></script>
       <!-- Bootstrap -->
       <link rel="stylesheet" 
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
@@ -24,6 +25,9 @@
    padding: 10px;
    width: 100%;
 
+}
+body{
+    background-image: url("leaves.png");
 }
 .grid-item{
    background-color:white;
@@ -57,7 +61,12 @@
    margin: 0;
    line-height: 0px;
    width: 0;
-
+}
+.fas{
+   line-height: 0px;
+}
+.fa-paw{
+   margin: 5px;
 }
 </style>
 </head>
@@ -65,7 +74,7 @@
 <body>
    <div class="heading">
       <h1 class="website">MineSweeper</h1>
-      <h6 class="logo">StealthyTiger Programming</h6>
+      <h6 class="logo"><i class="fas fa-paw"></i>StealthyTiger Programming<i class="fas fa-paw"></i></h6>
    </div>
    <button id="flagButton" type="button" onclick="flagButton()">okay</button>
 <div class="container">

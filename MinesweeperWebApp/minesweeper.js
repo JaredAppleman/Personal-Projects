@@ -161,6 +161,14 @@ var warningIndexList = [];
 
 var flagButtonBool = false;
 
+const fontFlag = '<i class="fas fa-flag"></i>'
+const fontBomb = '<i class="fas fa-bomb"></i>'
+const fontLightning = '<i class="fas fa-bolt"></i>'
+const fontLeaf = '<i class="fas fa-leaf"></i>'
+const fontSuprise = '<i class="far fa-surprise"></i>'
+const fontSmile = '<i class="far fa-smile"></i>'
+const fontSad = '<i class="far fa-sad-tear"></i>'
+
 /*###################################
 FUNCTIONS
 ####################################*/
@@ -170,7 +178,8 @@ const windowResize = function(){
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
     for (index = 0; index < unHiddenWarningList.length; index ++){
         let squareObject = unHiddenWarningList[index];
-        squareObject.gridParObject.style.fontSize = squareObject.domObject.offsetWidth.toString() + 'px';
+        width = squareObject.domObject.offsetWidth - 15
+        squareObject.gridParObject.style.fontSize = width.toString() + 'px';
     }
 }
 
@@ -182,18 +191,7 @@ const startFunction = function(){
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
     //plant bombs: list of 6 numbers: [0-35]
     plantBombs();
-/* 
-    for(bombIndex = 0; bombIndex < bombIndexList; bombIndex++){
-        bombSquareNumber = bombIndexList[bombIndex];
-        let row = Math.floor(bombSquareNumber / 6);
-        let col = bombSquareNumber % 6;
-        wallList = getWallList(row,col);
-        warningIndexList = warningIndexList.concat(getNeighborSquareNumbers(wallList));
-    } */
 
-
-
- 
     //make square objects; 0-36
     for (row = 0; row < 6; row++){
         for (col = 0; col < 6; col++){
@@ -222,18 +220,6 @@ const startFunction = function(){
         squareObjectList.push(tmpSquareObjectList);
         tmpSquareObjectList = [];
     } 
-/*
-    for (bombIndex = 0; bombIndex < 6; bombIndex ++){
-        let row = Math.floor(bombIndex / 6);
-        let col = bombIndex % 6;
-        bombSquare = squareObjectList[row][col];
-        warningSquareList = warningSquareList.concat(bombSquare.getNeighbors);
-    }
-    console.log(warningSquareList)
-    for (index = 0; index < warningSquareList.length; index++){
-        let warningSquare = warningSquareList[index];
-        warningSquare.is_Warning = true;
-    } */
 }
 
 
@@ -246,12 +232,13 @@ const squareClick = function(gridItemNumber){
     if (squareObject.isMine){
         squareObject.domObject.style.background = "red";
         if (flagButtonBool){
-            squareObject.gridParObject.innerText = ":)"
+            squareObject.gridParObject.innerHTML = '<i class="fas fa-flag"></i>'
         }
         else{
-            squareObject.gridParObject.innerText = ":("
+            squareObject.gridParObject.innerHTML = '<i class="fas fa-bomb"></i>'
         }
-        squareObject.gridParObject.style.fontSize = squareObject.domObject.offsetWidth.toString() + 'px';
+        width = squareObject.domObject.offsetWidth - 15
+        squareObject.gridParObject.style.fontSize = width.toString() + 'px';
         unHiddenWarningList.push(squareObject)
     }
     else if (squareObject.isWarning){
