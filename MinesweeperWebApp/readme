@@ -2,5 +2,10 @@ Author: Jared Appleman
 
 Description: Simple 6x6 minesweeper game. HTML, CSS, Javascript
 
-In-Progress: A lot of the functionality is done.
-To do: finish flag functionality, gameOver(win/lose), fontawesome(download locally for offline), finishing touches
+Completed: Game is done.
+
+Extra To do:
+-fontawesome(download locally for offline)
+-add settings (change number of rows/columns, number of bombs)
+
+
