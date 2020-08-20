@@ -233,33 +233,38 @@ const safeSquareFunction = function(neighborList){
     while (neighborList.length > 0){
         //get neighbor from list to check
         currentNeighbor = neighborList.shift();
-        //if the neighbor is a warningSquare AND if it is not already locked(been clicked on)...
-        if ((currentNeighbor.isWarning) && (!(lockedSquareList.includes(currentNeighbor)))){
-            //display the warning square with the number of surrounding bombs
-            currentNeighbor.domObject.style.background = "lightGray";
-            width = currentNeighbor.domObject.offsetWidth - 15
-            currentNeighbor.gridParObject.style.fontSize = width.toString() + 'px';
-            hasTextList.push(currentNeighbor)
-            numberOfBombs = bombCount(currentNeighbor.getNeighbors)
-            numberColor(currentNeighbor, numberOfBombs)
-            currentNeighbor.gridParObject.innerHTML = numberOfBombs
-            lockSquare(currentNeighbor);
-        }
-        //if the neighbor is also a safe square...
-        else if (currentNeighbor.isSafe){
-            currentNeighbor.domObject.style.background = "lightGray";
-            //get the neighbors of the square
-            newNeighbors = currentNeighbor.getNeighbors
-            //checks all the new neighbors...
-            for (index = 0; index < newNeighbors.length; index++){
-                //if it is not already locked AND it is not already apart of the neighborList...
-                if (!(lockedSquareList.includes(newNeighbors[index])) && (!(neighborList.includes(newNeighbors[index])))){
-                    //add newNeighbor to neighborList to check
-                    neighborList.push(newNeighbors[index])
-                }
+        //Unknow rule: what to do if flagged square is a safe square, it was buggy in official minesweeper
+        //what this does is ignore it, keeps flag, doesnt add flag's neighbor...
+        //if unflagged, it can still be clicked to complete the path... unless there is more flags
+        if (!(flagLockList.includes(currentNeighbor))){
+            //if the neighbor is a warningSquare AND if it is not already locked(been clicked on)...
+            if ((currentNeighbor.isWarning) && (!(lockedSquareList.includes(currentNeighbor)))){
+                //display the warning square with the number of surrounding bombs
+                currentNeighbor.domObject.style.background = "lightGray";
+                width = currentNeighbor.domObject.offsetWidth - 15
+                currentNeighbor.gridParObject.style.fontSize = width.toString() + 'px';
+                hasTextList.push(currentNeighbor)
+                numberOfBombs = bombCount(currentNeighbor.getNeighbors)
+                numberColor(currentNeighbor, numberOfBombs)
+                currentNeighbor.gridParObject.innerHTML = numberOfBombs
+                lockSquare(currentNeighbor);
             }
-            //lock the neighbor
-            lockSquare(currentNeighbor);
+            //if the neighbor is also a safe square...
+            else if (currentNeighbor.isSafe){
+                currentNeighbor.domObject.style.background = "lightGray";
+                //get the neighbors of the square
+                newNeighbors = currentNeighbor.getNeighbors
+                //checks all the new neighbors...
+                for (index = 0; index < newNeighbors.length; index++){
+                    //if it is not already locked AND it is not already apart of the neighborList...
+                    if (!(lockedSquareList.includes(newNeighbors[index])) && (!(neighborList.includes(newNeighbors[index])))){
+                        //add newNeighbor to neighborList to check
+                        neighborList.push(newNeighbors[index])
+                    }
+                }
+                //lock the neighbor
+                lockSquare(currentNeighbor);
+            }
         }
     }
 }
@@ -412,7 +417,7 @@ const unlockFlag = function(square){
     //make the square clickable
     square.domObject.disabled = false;
     //remove from flag list
-    flagLockList.splice(lockedSquareList.indexOf(square),1)
+    flagLockList.splice(flagLockList.indexOf(square),1)
 }
 
 const bombCount = function(neighborList){
