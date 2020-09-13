@@ -74,6 +74,11 @@ class square{
 /*###################################
 GLOBAL VARIABLES
 ####################################*/
+var numberOfBombs = 12;
+var numberOfSquares = 64;
+var numberOfRows = 8;
+var numberOfColumns = 8;
+
 var squareObjectList = [];
 var loss = false;
 var win = false;
@@ -109,9 +114,9 @@ const startFunction = function(){
     var tmpSquareObjectList = []
 
     //makes 2D array to hold square objects ~ resembles the board
-    for (row = 0; row < 6; row++){
-        for (col = 0; col < 6; col++){
-            let squareNumber = 6 * row + col
+    for (row = 0; row < numberOfRows; row++){
+        for (col = 0; col < numberOfColumns; col++){
+            let squareNumber = numberOfRows * row + col
             let squareObject = new square(gridItemDomList[squareNumber], gridItemParList[squareNumber], row, col)
 
             if (bombIndexList.includes(squareNumber)){
@@ -142,8 +147,8 @@ const squareClick = function(gridItemNumber){
     //Output: returns none; reacts accordingly to square click
 
     //selects appropriate square object from 2D-array
-    let row = Math.floor(gridItemNumber / 6);
-    let col = gridItemNumber % 6;
+    let row = Math.floor(gridItemNumber / numberOfRows);
+    let col = gridItemNumber % numberOfRows;
     let squareObject = squareObjectList[row][col];
 
     //if flagButton Enabled
@@ -188,19 +193,19 @@ const squareClick = function(gridItemNumber){
     else if (squareObject.isWarning){
         squareObject.domObject.style.background = "lightGray";
         //gets the # of bombs surrounding square
-        numberOfBombs = bombCount(squareObject.getNeighbors)
+        bombCount = getBombCount(squareObject.getNeighbors)
         //sets the color of the number: depending of # of bombs
-        numberColor(squareObject, numberOfBombs)
+        numberColor(squareObject, bombCount)
         //displays the number
         //sets the width of the number to the same width of the square - 15
-        squareObject.gridParObject.innerHTML = numberOfBombs
+        squareObject.gridParObject.innerHTML = bombCount
         width = squareObject.domObject.offsetWidth - 15
         squareObject.gridParObject.style.fontSize = width.toString() + 'px';
         hasTextList.push(squareObject)
         //lock the square
         lockSquare(squareObject)
         //check win conditon
-        if (lockedSquareList.length === 30){
+        if (lockedSquareList.length === (numberOfSquares - numberOfBombs)){
             win = true;
             gameOver()
         }
@@ -216,7 +221,7 @@ const squareClick = function(gridItemNumber){
         let neighborList = squareObject.getNeighbors;
         safeSquareFunction(neighborList);
         //check win condition
-        if (lockedSquareList.length === 30){
+        if (lockedSquareList.length === (numberOfSquares - numberOfBombs)){
             win = true;
             gameOver()
         }
@@ -244,9 +249,9 @@ const safeSquareFunction = function(neighborList){
                 width = currentNeighbor.domObject.offsetWidth - 15
                 currentNeighbor.gridParObject.style.fontSize = width.toString() + 'px';
                 hasTextList.push(currentNeighbor)
-                numberOfBombs = bombCount(currentNeighbor.getNeighbors)
-                numberColor(currentNeighbor, numberOfBombs)
-                currentNeighbor.gridParObject.innerHTML = numberOfBombs
+                bombCount = getBombCount(currentNeighbor.getNeighbors)
+                numberColor(currentNeighbor, bombCount)
+                currentNeighbor.gridParObject.innerHTML = bombCount
                 lockSquare(currentNeighbor);
             }
             //if the neighbor is also a safe square...
@@ -315,7 +320,7 @@ const refreshPage = function(){
 
 /*###################################
 HELPER FUNCTIONS: plantBombs, lockSquare, getWarningIndes, warningIndexHelper, 
-getWallList, unlockFlag, bombCount, numberColor, isOver, gameOver
+getWallList, unlockFlag, getBombCount, numberColor, isOver, gameOver
 ####################################*/
 const plantBombs = function(){
     //Input: none;
@@ -323,15 +328,15 @@ const plantBombs = function(){
     //        builds warningIndexList from the bomb locations (list of any square that has a bomb as a neighbor)
     
     //plant  bombs
-    for (x = 0; x < 6; x++){
+    for (x = 0; x < numberOfBombs; x++){
         //get unique random number [0-35]
-        bombIndex = Math.floor(Math.random()*36);
+        bombIndex = Math.floor(Math.random() * numberOfSquares);
         while (bombIndexList.includes(bombIndex)){
-            bombIndex = Math.floor(Math.random()*36);
+            bombIndex = Math.floor(Math.random() * numberOfSquares);
         }
         //get board row/column of random number
-        let row = Math.floor(bombIndex / 6);
-        let col = bombIndex % 6;
+        let row = Math.floor(bombIndex / numberOfRows);
+        let col = bombIndex % numberOfRows;
         //gets the walls of the square at that [row][column]
         wallList = getWallList(row,col);
         //given the wallList, gets the neighbors of the square
@@ -349,25 +354,25 @@ const getWarningIndexes = function(wallList, bombIndex){
     //Output: list of warning indexes (indexes of squares that are neighbors to bomb)
 
     if (!(wallList.includes('topLeft'))){
-        warningIndexHelper(bombIndex - 7)
+        warningIndexHelper(bombIndex - (numberOfRows + 1))
     }
     if (!(wallList.includes('top'))){
-        warningIndexHelper(bombIndex - 6)
+        warningIndexHelper(bombIndex - numberOfRows)
     }
     if (!(wallList.includes('topRight'))){
-        warningIndexHelper(bombIndex - 5)
+        warningIndexHelper(bombIndex - (numberOfRows - 1))
     }
     if (!(wallList.includes('right'))){
        warningIndexHelper(bombIndex + 1)
     }
     if (!(wallList.includes('bottomRight'))){
-       warningIndexHelper(bombIndex + 7)
+       warningIndexHelper(bombIndex + (numberOfRows + 1))
     }
     if (!(wallList.includes('bottom'))){
-        warningIndexHelper(bombIndex + 6)
+        warningIndexHelper(bombIndex + numberOfRows)
     }
     if (!(wallList.includes('bottomLeft'))){
-        warningIndexHelper(bombIndex + 5)
+        warningIndexHelper(bombIndex + (numberOfRows - 1))
     }
     if (!(wallList.includes('left'))){
         warningIndexHelper(bombIndex - 1)
@@ -389,13 +394,13 @@ const getWallList = function(row, col){
     if (row === 0){
         wallList = arrayUnion(wallList,['topLeft', 'top', 'topRight'])   
     }
-    if (row === 5){
+    if (row === (numberOfRows - 1)){
         wallList = arrayUnion(wallList,['bottomLeft', 'bottom', 'bottomRight'])
     }
     if (col === 0){
         wallList = arrayUnion(wallList,['topLeft', 'left', 'bottomLeft'])
     }
-    if (col === 5){
+    if (col === (numberOfColumns - 1)){
         wallList = arrayUnion(wallList,['topRight', 'right', 'bottomRight'])
     }
     return wallList;
@@ -420,7 +425,7 @@ const unlockFlag = function(square){
     flagLockList.splice(flagLockList.indexOf(square),1)
 }
 
-const bombCount = function(neighborList){
+const getBombCount = function(neighborList){
     //Input: a list of square objects
     //Output: integer; counts how many of the square objects are mines
     bombs = 0;
@@ -433,23 +438,23 @@ const bombCount = function(neighborList){
     return bombs;
 }
 
-const numberColor = function(square,numberOfBombs){
+const numberColor = function(square,number){
     //Input: square object, interger
     //output: returns none; sets color property of content of squareobject
     let color;
-    if (numberOfBombs === 1){
+    if (number === 1){
         color = 'blue'
     }
-    else if (numberOfBombs === 2){
+    else if (number === 2){
         color = 'green'
     }
-    else if (numberOfBombs === 3){
+    else if (number === 3){
         color = 'yellow'
     }
-    else if (numberOfBombs === 4){
+    else if (number === 4){
         color = 'orange'
     }
-    else if (numberOfBombs === 5){
+    else if (number === 5){
         color = 'red'
     }
     else{
@@ -490,8 +495,8 @@ const gameOver = function(){
     //        if win: reveals all flags at bomb spots
 
     //for each square object
-    for (row = 0; row < 6; row++){
-        for(col = 0; col < 6; col++){
+    for (row = 0; row < numberOfRows; row++){
+        for(col = 0; col < numberOfColumns; col++){
             //get current square object
             let squareObject = squareObjectList[row][col];
             if (squareObject.isMine){
