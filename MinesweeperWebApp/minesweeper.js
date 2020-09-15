@@ -1,11 +1,18 @@
 /*###################################
 DOM variables
 ####################################*/
-var gridContainer = document.querySelector('.grid-container');
-var gridItemDomList = document.querySelectorAll('.grid-item');
-var gridItemParList = document.querySelectorAll('.grid-item p');
+var gridContainer = document.querySelector('.grid-container');//used for resizing board when window resized
+var gridItemDomList = document.querySelectorAll('.grid-item');//targets the square buttons
+var gridItemParList = document.querySelectorAll('.grid-item p');//targets the content within each square 
 var flagButtonDom = document.querySelector('#flagButton')
 var emojiDom = document.querySelector('#emoji')
+var gameBoard = document.querySelector('#gameBoard')
+
+
+
+
+
+
 
 /*###################################
 CLASSES
@@ -71,6 +78,12 @@ class square{
     }
 }
 
+
+
+
+
+
+
 /*###################################
 GLOBAL VARIABLES
 ####################################*/
@@ -98,6 +111,13 @@ const fontSmile = '<i class="far fa-smile"></i>'
 const fontSad = '<i class="far fa-frown-open"></i>'
 const fontLaugh = '<i class="far fa-laugh-beam"></i>'
 
+
+
+
+
+
+
+
 /*###################################
 MAIN FUNCTIONS start, squareClick, safeSquareFunction
 ####################################*/
@@ -112,6 +132,8 @@ const startFunction = function(){
     plantBombs();
     //local variable
     var tmpSquareObjectList = []
+
+    newBoard()
 
     //makes 2D array to hold square objects ~ resembles the board
     for (row = 0; row < numberOfRows; row++){
@@ -273,6 +295,14 @@ const safeSquareFunction = function(neighborList){
         }
     }
 }
+
+
+
+
+
+
+
+
 /*###################################
 BUTTON/EVEN FUNCTIONS: windowResize, flagButton, refreshPage
 ####################################*/
@@ -280,8 +310,9 @@ BUTTON/EVEN FUNCTIONS: windowResize, flagButton, refreshPage
 const windowResize = function(){
     //Input: none
     //Output: returns None; 
-    // whenever the window is resized, updates the board width and content width inside squares
-    //updates the width of the board to match the height, to keep it a square
+    // whenever the window is resized, updates the height of the board and the height of the width of the
+    //content inside the squares
+    //updates the height to match the width, to keep it a square
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
     //for all the squares that have text (icon or number), resizes the font-size to be the same as the square width
     for (index = 0; index < hasTextList.length; index ++){
@@ -317,6 +348,14 @@ const refreshPage = function(){
     location.reload();
     return false;
 }
+
+
+
+
+
+
+
+
 
 /*###################################
 HELPER FUNCTIONS: plantBombs, lockSquare, getWarningIndes, warningIndexHelper, 
@@ -517,6 +556,26 @@ const gameOver = function(){
         }
     }
 }
+
+const newBoard = function(rows){
+
+    let cssValue = ''
+    for (x = 0; x < rows; x++){
+        cssValue += 'auto ';
+    }
+    gameBoard.style.gridTemplateColumns = cssValue;
+    gameBoard.innerHTML += '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(63)"><p></p></button>'
+    //squareHTML = '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(' + okay +
+    //')"><p></p></button>'
+    gridContainer = document.querySelector('.grid-container');
+    gridItemDomList = document.querySelectorAll('.grid-item');
+    gridItemParList = document.querySelectorAll('.grid-item p');
+}
+
+
+
+
+
 
 
 /*###################################

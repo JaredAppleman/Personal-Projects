@@ -20,7 +20,7 @@
 .grid-container{
    display: grid;
    grid-template-columns: auto auto auto auto auto auto auto auto;
-   grid-template-rows: auto auto auto auto auto auto auto auto;
+   /*grid-template-rows: auto auto auto auto auto auto auto auto;*/
    background-color: orange;
    padding: 10px;
    width: 100%;
@@ -95,7 +95,7 @@ button:disabled{
    </div>
 
 <div class="container">
-<div class="grid-container">
+<div class="grid-container" id="gameBoard">
    <button class="grid-item" id="grid-item" type="button" onclick="squareClick(0)"><p></p></button>
    <button class="grid-item" id="grid-item" type="button" onclick="squareClick(1)"><p></p></button>
    <button class="grid-item" id="grid-item" type="button" onclick="squareClick(2)"><p></p></button>
