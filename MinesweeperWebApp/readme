@@ -1,13 +1,14 @@
 Author: Jared Appleman
 
-Description: Simple 6x6 minesweeper game. HTML, CSS, Javascript
+Description: adjusting my game to accept user input to effect the number of squares and bombs. Will merge branches when I'm done.
 
-Completed: Game is done.
+Things I've Added:
+-Generalized the code to work with any given AxA (square) board and any number of bombs; versus 6x6 with 6 bombs being hard coded in.
+-The settings(cog) button prompts the user for number of rows. If they give an answer, prompts for number of bombs. 
+-Have a function to change the number of squares displayed.
 
 Extra To do:
 -fontawesome(download locally for offline)
--add settings (change number of rows/columns, number of bombs)
-
-testing new branch :)
+-learn to build custom pop-up instead of using built-in prompt function
 
 
