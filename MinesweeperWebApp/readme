@@ -6,8 +6,14 @@ Things I've Added:
 -Generalized the code to work with any given AxA (square) board and any number of bombs; versus 6x6 with 6 bombs being hard coded in.
 -The settings(cog) button prompts the user for number of rows. If they give an answer, prompts for number of bombs. 
 -Have a function to change the number of squares displayed.
+-Successfully used sessionStorage to store values from prompts. Upon reload, a function checks sessionStorage and updates board accordingly.
+
+To do:
+-add function to check user input (ex. number of bombs cant be bigger than number of squares); set limits
+-visuals need some adjusting for large square count (ex. 40x40 and higher) under the limit
 
 Extra To do:
 -learn to build custom pop-up instead of using built-in prompt function
+-handle non-square dimensions
 
 
