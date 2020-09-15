@@ -2,10 +2,10 @@ Author: Jared Appleman
 
 Description: Simple 6x6 minesweeper game. HTML, CSS, Javascript
 
-Completed: Game is done.
+Progress: Core game is done. Started a new branch to accept user input to effect the number of squares and bombs.
 
 Extra To do:
 -fontawesome(download locally for offline)
--add settings (change number of rows/columns, number of bombs)
+-work on other branch (user input)
 
 
