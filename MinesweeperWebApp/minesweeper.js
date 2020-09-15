@@ -128,12 +128,13 @@ const startFunction = function(){
 
     //resize inital window
     gridContainer.style.height = gridContainer.offsetWidth.toString() + 'px';
+
+    newBoard()
+
     //plant bombs: list of 6 numbers: [0-35]; updates global variable
     plantBombs();
     //local variable
     var tmpSquareObjectList = []
-
-    newBoard()
 
     //makes 2D array to hold square objects ~ resembles the board
     for (row = 0; row < numberOfRows; row++){
@@ -353,6 +354,11 @@ const settingsButton = function(){
     answer1 = prompt('How many rows?')
     if (answer1){
         answer2 = prompt('How many bombs?')
+        if (answer2){
+            sessionStorage.setItem("update",true)
+            sessionStorage.setItem("rows",answer1)
+            sessionStorage.setItem("bombs",answer2)
+        }
         //store answers in localwindow storage
         //reload page
         //edit newBoard function to read values and update board
@@ -569,19 +575,33 @@ const gameOver = function(){
     }
 }
 
-const newBoard = function(rows){
-
+const newBoard = function(){
     let cssValue = ''
-    for (x = 0; x < rows; x++){
-        cssValue += 'auto ';
+    let gameBoardHTML = ''
+
+    numberOfRows = Number(sessionStorage.getItem("rows"))
+    numberOfColumns = numberOfRows
+    numberOfSquares = Math.pow(numberOfRows,2)
+    numberOfBombs = Number(sessionStorage.getItem("bombs"))
+
+    if (sessionStorage.getItem("update")){
+        for (x = 0; x < numberOfSquares; x++){
+            gameBoardHTML += '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(' + x +
+            ')"><p></p></button>'
+        }
+
+        for (x = 0; x < numberOfRows; x++){
+            cssValue += 'auto ';
+        }
+        gameBoard.style.gridTemplateColumns = cssValue;
+        gameBoard.innerHTML = gameBoardHTML;
+
+        //squareHTML = '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(' + okay +
+        //')"><p></p></button>'
+        gridContainer = document.querySelector('.grid-container');
+        gridItemDomList = document.querySelectorAll('.grid-item');
+        gridItemParList = document.querySelectorAll('.grid-item p');
     }
-    gameBoard.style.gridTemplateColumns = cssValue;
-    gameBoard.innerHTML += '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(64)"><p></p></button>'
-    //squareHTML = '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(' + okay +
-    //')"><p></p></button>'
-    gridContainer = document.querySelector('.grid-container');
-    gridItemDomList = document.querySelectorAll('.grid-item');
-    gridItemParList = document.querySelectorAll('.grid-item p');
 }
 
 
