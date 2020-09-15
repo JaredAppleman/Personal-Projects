@@ -349,6 +349,18 @@ const refreshPage = function(){
     return false;
 }
 
+const settingsButton = function(){
+    answer1 = prompt('How many rows?')
+    if (answer1){
+        answer2 = prompt('How many bombs?')
+        //store answers in localwindow storage
+        //reload page
+        //edit newBoard function to read values and update board
+
+        //or build custom pop-up with jquery
+    }
+}
+
 
 
 
@@ -564,7 +576,7 @@ const newBoard = function(rows){
         cssValue += 'auto ';
     }
     gameBoard.style.gridTemplateColumns = cssValue;
-    gameBoard.innerHTML += '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(63)"><p></p></button>'
+    gameBoard.innerHTML += '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(64)"><p></p></button>'
     //squareHTML = '<button class="grid-item" id="grid-item" type="button" onclick="squareClick(' + okay +
     //')"><p></p></button>'
     gridContainer = document.querySelector('.grid-container');
